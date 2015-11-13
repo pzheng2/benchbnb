@@ -8,3 +8,4 @@
 Bench.create(description: "New York City bench", lat: 40.7127, lng: 74.0059)
 Bench.create(description: "Pennsylvania bench", lat: 41.0000, lng: 77.50000)
 Bench.create(description: "Random bench", lat: 12.1232, lng: 12.2312)
+Bench.create(description: "San Francisco bench", lat: 37.7758, lng: -122.435)
