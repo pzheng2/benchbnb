@@ -1,6 +1,6 @@
 var Map = window.Map = React.createClass ({
   getInitialState: function () {
-    return { markers: [], previousBenches: BenchStore.all() };
+    return { markers: [], previousBenches: BenchStore.all(), prevBenchMarker: {} };
   },
 
   componentDidMount: function () {
@@ -30,35 +30,46 @@ var Map = window.Map = React.createClass ({
     this.map.removeListener('idle');
   },
 
+
   manageMarkers: function () {
 
     var markersArr = this.state.markers;
 
-    this.prevBenchMarker = {};
-    this.state.prevBenchMarker = {};
 
+    var marker;
     BenchStore.all().forEach(function (bench, i) {
-      if (this.state.previousBenches.indexOf(bench) === -1) {
+      if (!this.includesBench(this.state.previousBenches, bench)) {
         var latLng = { lat: bench.lat, lng: bench.lng };
 
-        var marker = new google.maps.Marker({
+        marker = new google.maps.Marker({
           position: latLng,
           map: this.map,
           title: bench.description
         });
 
-        this.prevBenchMarker[bench] = marker;
+        this.state.prevBenchMarker[bench.description] = marker;
         marker.setMap(this.map);
       }
     }.bind(this));
 
-    this.state.previousBenches.forEach(function (prevBench, i) {
-      if (BenchStore.all().indexOf(prevBench) === -1) {
-        this.prevBench[prevBench].setMap(null);
+    this.state.previousBenches.forEach(function (prevBench) {
+      if (!this.includesBench(BenchStore.all(), prevBench)) {
+        this.state.prevBenchMarker[prevBench.description].setMap(null);
       }
-    });
+    }.bind(this));
+
 
     this.setState({ previousBenches: BenchStore.all() });
+  },
+
+  includesBench: function (arr, bench) {
+    for (var i = 0; i < arr.length; i++) {
+      if (bench.description === arr[i].description) {
+        return true;
+      }
+    }
+
+    return false;
   },
 
   render: function () {
@@ -70,15 +81,3 @@ var Map = window.Map = React.createClass ({
   }
 
 });
-
-
-
-
-//
-// prevBench = ["San Francisco", "hello"]
-// newBenches = ["San Francisco", "hello", "SF"]
-// markers = ["San Francisco", "hello"]
-//
-// prevBench = ["San Francisco", "hello", "SF"]
-// markers = ["San Francisco", "hello"]
-// newBenches = ["hello", "SF"]
