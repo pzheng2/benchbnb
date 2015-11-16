@@ -1,0 +1,3 @@
+FilterConstants = {
+  FILTER: "FILTER"
+};

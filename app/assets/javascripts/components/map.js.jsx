@@ -19,22 +19,36 @@ var Map = window.Map = React.createClass ({
             "northEast": { "lat": latLngBounds.getNorthEast().lat(), "lng": latLngBounds.getNorthEast().lng() },
             "southWest": { "lat": latLngBounds.getSouthWest().lat(), "lng": latLngBounds.getSouthWest().lng() }
           };
-      ApiUtil.fetchBenches(bounds);
+      // ApiUtil.fetchBenches(bounds);
+      filter = {};
+      FilterActions.Filter(filter);
 
+    }.bind(this));
+
+    this.map.addListener('click', function (event) {
+      var coords = { "lat": event.latLng.lat(), "lng": event.latLng.lng() };
+      this.props.clickMapHandler(coords);
     }.bind(this));
 
   },
 
   componentWillUnmount: function () {
     BenchStore.removeChangeListener(this.manageMarkers);
-    this.map.removeListener('idle');
+    // this.map.event.clearListeners();
   },
 
+  includesBench: function (arr, bench) {
+    for (var i = 0; i < arr.length; i++) {
+      if (bench.description === arr[i].description) {
+        return true;
+      }
+    }
+
+    return false;
+  },
 
   manageMarkers: function () {
-
     var markersArr = this.state.markers;
-
 
     var marker;
     BenchStore.all().forEach(function (bench, i) {
@@ -60,16 +74,6 @@ var Map = window.Map = React.createClass ({
 
 
     this.setState({ previousBenches: BenchStore.all() });
-  },
-
-  includesBench: function (arr, bench) {
-    for (var i = 0; i < arr.length; i++) {
-      if (bench.description === arr[i].description) {
-        return true;
-      }
-    }
-
-    return false;
   },
 
   render: function () {

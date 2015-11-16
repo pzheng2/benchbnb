@@ -1,10 +1,15 @@
 var Index = window.Index = React.createClass ({
+
   getInitialState: function () {
     return { benches: BenchStore.all() };
   },
 
   componentDidMount: function () {
     BenchStore.addChangeListener(this._onChange);
+  },
+
+  componentWillUnmount: function () {
+    BenchStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function () {

@@ -1,6 +1,6 @@
 ApiUtil = {
   fetchBenches: function (bounds) {
-    $.ajax({
+    $.ajax ({
       type: 'GET',
       url: 'api/bench',
       data: { bounds: bounds },
@@ -8,5 +8,17 @@ ApiUtil = {
         ApiActions.ReceiveAllBenches(benches);
       }
     });
-  }
+  },
+
+  createBench: function (bench_params) {
+    $.ajax ({
+      type: 'POST',
+      url: 'api/bench/',
+      data: { bench: bench_params },
+      success: function (bench) {
+        ApiActions.NewBench(bench);
+      }
+    });
+  },
+  
 };

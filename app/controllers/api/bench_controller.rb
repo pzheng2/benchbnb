@@ -1,4 +1,5 @@
 class Api::BenchController < ApplicationController
+
   def index
     p params
     @benches = Bench.in_bound(params[:bounds])
@@ -10,8 +11,10 @@ class Api::BenchController < ApplicationController
     render json: @bench
   end
 
+  private
+
   def bench_params
-    params.require(:bench).permit(:description, :lat, :lng)
+    params.require(:bench).permit(:description, :lat, :lng, :seating)
   end
 
 
