@@ -1,6 +1,11 @@
 var Search = window.Search = React.createClass ({
   getInitialState: function () {
-    return { benches: BenchStore.all(), bounds: "", minSeating: "", maxSeating: "" };
+    return {
+      benches: BenchStore.all(),
+      bounds: FilterParamsStore.all().bounds,
+      minSeating: FilterParamsStore.all().min,
+      maxSeating: FilterParamsStore.all().max
+    };
   },
 
   componentDidMount: function () {
@@ -12,7 +17,13 @@ var Search = window.Search = React.createClass ({
   },
 
   _onChange: function () {
-    this.setState( { benches: BenchStore.all() });
+    ApiUtil.filterBenches(FilterParamsStore.all());
+    this.setState({
+      benches: BenchStore.all(),
+      bounds: FilterParamsStore.all().bounds,
+      minSeating: FilterParamsStore.all().min,
+      maxSeating: FilterParamsStore.all().max
+    });
   },
 
   clickMapHandler: function (coords) {
@@ -26,6 +37,7 @@ var Search = window.Search = React.createClass ({
       <div>
         <Map clickMapHandler={this.clickMapHandler} />
         <Index />
+        <FilterParams />
       </div>
 
     );

@@ -4,6 +4,8 @@ var Index = window.Index = React.createClass ({
     return { benches: BenchStore.all() };
   },
 
+  mixins: [ReactRouter.History],
+
   componentDidMount: function () {
     BenchStore.addChangeListener(this._onChange);
   },
@@ -16,16 +18,22 @@ var Index = window.Index = React.createClass ({
     this.setState({ benches: BenchStore.all() });
   },
 
+  _onClick: function (event) {
+    this.history.pushState(null, "/bench/" + event.currentTarget.id + "/show", null);
+    this.history.go(1);
+  },
+
   render: function () {
     return (
       <div>
         <ol>
           {this.state.benches.map(function (bench) {
             return (
-              <li key={bench.id}>
+              <li onClick={this._onClick} id={bench.id} key={bench.id}>
                 {bench.description}
-              </li>);
-          })}
+              </li>
+            );
+          }.bind(this))}
         </ol>
       </div>
     );

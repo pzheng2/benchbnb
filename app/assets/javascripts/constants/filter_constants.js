@@ -1,3 +1,4 @@
 FilterConstants = {
-  FILTER: "FILTER"
+  FILTER_BOUNDS:  "FILTER_BOUNDS",
+  FILTER_SEATS:   "FILTER_SEATS"
 };

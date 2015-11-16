@@ -1,4 +1,16 @@
 ApiUtil = {
+
+  filterBenches: function (filterParams) {
+    $.ajax ({
+      type: 'GET',
+      url: 'api/bench',
+      data: { bounds: filterParams.bounds, minSeats: filterParams.minSeats, maxSeats: filterParams.maxSeats},
+      success: function (benches) {
+        ApiActions.ReceiveFilteredBenches(benches);
+      }
+    });
+  },
+
   fetchBenches: function (bounds) {
     $.ajax ({
       type: 'GET',
@@ -20,5 +32,5 @@ ApiUtil = {
       }
     });
   },
-  
+
 };

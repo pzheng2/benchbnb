@@ -1,4 +1,12 @@
 ApiActions = {
+
+  ReceiveFilteredBenches: function (benches) {
+    AppDispatcher.dispatch({
+      actionType: BenchConstants.BENCHES_RECEIVED,
+      benches: benches
+    });
+  },
+
   ReceiveAllBenches: function (benches) {
     AppDispatcher.dispatch({
       actionType: BenchConstants.BENCHES_RECEIVED,

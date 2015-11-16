@@ -19,7 +19,8 @@ $(function () {
     var routes = (
         <Route path="/" component={App}>
           <IndexRoute component={Search}/>
-          <Route path="bench/new" component={BenchForm}/>
+          <Route path="bench/new" component={BenchForm} />
+          <Route path="bench/:id/show" component={Bench} />
         </Route>
     );
     React.render(<Router>{routes}</Router>, root);

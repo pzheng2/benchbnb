@@ -20,8 +20,7 @@ var Map = window.Map = React.createClass ({
             "southWest": { "lat": latLngBounds.getSouthWest().lat(), "lng": latLngBounds.getSouthWest().lng() }
           };
       // ApiUtil.fetchBenches(bounds);
-      filter = {};
-      FilterActions.Filter(filter);
+      FilterActions.FilterBounds(bounds);
 
     }.bind(this));
 
@@ -48,9 +47,9 @@ var Map = window.Map = React.createClass ({
   },
 
   manageMarkers: function () {
-    var markersArr = this.state.markers;
+    var markersArr = this.state.markers, marker;
 
-    var marker;
+    // make new markers
     BenchStore.all().forEach(function (bench, i) {
       if (!this.includesBench(this.state.previousBenches, bench)) {
         var latLng = { lat: bench.lat, lng: bench.lng };
@@ -66,6 +65,7 @@ var Map = window.Map = React.createClass ({
       }
     }.bind(this));
 
+    // delete markers not in bounds
     this.state.previousBenches.forEach(function (prevBench) {
       if (!this.includesBench(BenchStore.all(), prevBench)) {
         this.state.prevBenchMarker[prevBench.description].setMap(null);
@@ -82,6 +82,7 @@ var Map = window.Map = React.createClass ({
       <div className="map" ref="map">
       </div>
     );
+    
   }
 
 });

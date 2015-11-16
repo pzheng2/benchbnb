@@ -1,8 +1,11 @@
 class Api::BenchController < ApplicationController
 
   def index
-    p params
-    @benches = Bench.in_bound(params[:bounds])
+    if params[:minSeats] != ""
+      @benches = Bench.filter(params[:bounds], params[:minSeats], params[:maxSeats])
+    else
+      @benches = Bench.in_bound(params[:bounds]);
+    end
     render json: @benches
   end
 
